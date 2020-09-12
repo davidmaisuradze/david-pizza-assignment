@@ -1,0 +1,39 @@
+html
+    head
+        title Notes Report
+        style
+            include ./notes-report.css
+
+    body
+        .header-title
+            h3 Notes Report
+
+        .divider
+
+        .notes-container
+            if notes
+                each note in notes
+                    .notes
+                        .title-container
+                            p.title Date:
+                            p.text= note.workedDate
+                        .title-container
+                            p.title Total time:
+                            p.text= note.totalWorkedHours
+                        if(note.tasks)
+                            .notes-list-container
+                                .notes-list-title Notes:
+                                ul.notes-list
+                                    each task in note.tasks
+                                        li.note-item(class=`${getHoursAndMinutesInSeconds(task.dateFrom) < preferredWorkingHourFrom*3600
+                                        || getHoursAndMinutesInSeconds(task.dateTo) > preferredWorkingHourTo*3600 ? 'overtime' : ''}`)
+                                            .title-container
+                                                p.title Hours:
+                                                p.text= `${formatDate(task.dateFrom)} - ${formatDate(task.dateTo)}`
+                                            .title-container
+                                                p.title Title:
+                                                p.text= task.title
+                                            .title-container.baseline
+                                                p.title Description:
+                                                p.text= task.description
+
